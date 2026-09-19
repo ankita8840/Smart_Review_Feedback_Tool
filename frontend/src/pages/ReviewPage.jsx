@@ -4,6 +4,7 @@ import "./ReviewPage.css";
 
 import StarRating from "../components/StarRating";
 import SuggestionCard from "../components/SuggestionCard";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 function ReviewPage() {
@@ -12,16 +13,14 @@ function ReviewPage() {
   const [context, setContext] = useState("");
 
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedSuggestion, setSelectedSuggestion] = useState("");
-
-  const [finalText, setFinalText] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Temporary business ID
+  // Live business ID
   const businessId = "6aadf3e0368560cf69b8d980";
 
+  // Generate Review
   const generateReview = async () => {
     try {
       setMessage("");
@@ -43,15 +42,11 @@ function ReviewPage() {
         }
       );
 
+      // Show generated suggestions
       setSuggestions(response.data.suggestions);
 
-      setSelectedSuggestion(
-        response.data.suggestions[0]
-      );
-
-      setFinalText(
-        response.data.suggestions[0]
-      );
+      // No suggestion will be selected automatically
+      // Existing user context will remain unchanged
 
     } catch (error) {
       console.log(error);
@@ -65,11 +60,12 @@ function ReviewPage() {
     }
   };
 
+  // Select a suggestion
   const selectSuggestion = (suggestion) => {
-    setSelectedSuggestion(suggestion);
-    setFinalText(suggestion);
+    setContext(suggestion);
   };
 
+  // Submit Review
   const submitReview = async () => {
     try {
       setMessage("");
@@ -79,7 +75,7 @@ function ReviewPage() {
         return;
       }
 
-      if (!finalText.trim()) {
+      if (!context.trim()) {
         setMessage("Please enter your feedback.");
         return;
       }
@@ -94,7 +90,7 @@ function ReviewPage() {
           service,
           context,
           generatedSuggestions: suggestions,
-          finalText
+          finalText: context
         }
       );
 
@@ -102,12 +98,11 @@ function ReviewPage() {
         "Thank you! Your feedback has been submitted successfully."
       );
 
+      // Reset form
       setRating(0);
       setService("");
       setContext("");
       setSuggestions([]);
-      setSelectedSuggestion("");
-      setFinalText("");
 
     } catch (error) {
       console.log(error);
@@ -130,14 +125,23 @@ function ReviewPage() {
 
         <p className="business-name">
           Glow Salon
-        </p><hr/>
+        </p>
 
-        <p style={{ textAlign: 'left', fontSize: '21px', }}>
-          <b>Business Type:  </b>
+        <hr />
+
+        <p
+          style={{
+            textAlign: "left",
+            fontSize: "21px"
+          }}
+        >
+          <b>Business Type: </b>
           Salon
         </p>
 
-        <h3 style={{ fontSize: '21px' }}>How was your experience?</h3>
+        <h3 style={{ fontSize: "21px" }}>
+          How was your experience?
+        </h3>
 
         <StarRating
           rating={rating}
@@ -167,8 +171,9 @@ function ReviewPage() {
             What did you like / what can improve?
           </label>
 
-          <textarea style={{ resize: 'none' }}
-            placeholder="Tell us about your experience..."
+          <textarea
+            style={{ resize: "none" }}
+            placeholder="Tell us about your experience or select a suggestion below..."
             value={context}
             onChange={(e) =>
               setContext(e.target.value)
@@ -187,7 +192,6 @@ function ReviewPage() {
             : "Generate Review"}
         </button>
 
-
         {suggestions.length > 0 && (
 
           <div className="suggestions-section">
@@ -202,9 +206,6 @@ function ReviewPage() {
                 <SuggestionCard
                   key={index}
                   suggestion={suggestion}
-                  selected={
-                    selectedSuggestion === suggestion
-                  }
                   onSelect={() =>
                     selectSuggestion(suggestion)
                   }
@@ -216,27 +217,6 @@ function ReviewPage() {
           </div>
 
         )}
-
-
-        {suggestions.length > 0 && (
-
-          <div className="form-group">
-
-            <label>
-              Edit your review
-            </label>
-
-            <textarea
-              value={finalText}
-              onChange={(e) =>
-                setFinalText(e.target.value)
-              }
-            />
-
-          </div>
-
-        )}
-
 
         {suggestions.length > 0 && (
 
@@ -251,7 +231,6 @@ function ReviewPage() {
           </button>
 
         )}
-
 
         {message && (
 
