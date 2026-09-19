@@ -20,7 +20,7 @@ function ReviewPage() {
   const [message, setMessage] = useState("");
 
   // Temporary business ID
-  const businessId = "6aad1306652c5cdc8fc5e88e";
+  const businessId = "6aadf3e0368560cf69b8d980";
 
   const generateReview = async () => {
     try {
