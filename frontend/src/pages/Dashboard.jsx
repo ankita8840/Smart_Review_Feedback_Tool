@@ -15,7 +15,7 @@ function Dashboard() {
       setLoading(true);
       setError("");
 
-      let url = "http://localhost:4000/api/reviews";
+      let url = `${import.meta.env.VITE_API_URL}/reviews`;
 
       if (ratingFilter) {
         url += `?rating=${ratingFilter}`;

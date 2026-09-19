@@ -4,6 +4,7 @@ import "./ReviewPage.css";
 
 import StarRating from "../components/StarRating";
 import SuggestionCard from "../components/SuggestionCard";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ReviewPage() {
   const [rating, setRating] = useState(0);
@@ -33,7 +34,7 @@ function ReviewPage() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:4000/api/reviews/generate",
+        `${API_URL}/reviews/generate`,
         {
           businessId,
           rating,
@@ -86,7 +87,7 @@ function ReviewPage() {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:4000/api/reviews",
+        `${API_URL}/reviews`,
         {
           businessId,
           rating,
