@@ -13,6 +13,7 @@ function ReviewPage() {
   const [context, setContext] = useState("");
 
   const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -62,8 +63,9 @@ function ReviewPage() {
 
   // Select a suggestion
   const selectSuggestion = (suggestion) => {
-    setContext(suggestion);
-  };
+  setSelectedSuggestion(suggestion);
+  setContext(suggestion);
+};
 
   // Submit Review
   const submitReview = async () => {
@@ -206,6 +208,7 @@ function ReviewPage() {
                 <SuggestionCard
                   key={index}
                   suggestion={suggestion}
+                  selected={selectedSuggestion === suggestion}
                   onSelect={() =>
                     selectSuggestion(suggestion)
                   }

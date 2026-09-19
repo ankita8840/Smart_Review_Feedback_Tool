@@ -1,16 +1,20 @@
-function SuggestionCard({ suggestion, onSelect }) {
+function SuggestionCard({ suggestion, selected, onSelect }) {
   return (
-    <div className="suggestion-card">
-
+    <div
+      className={
+        selected
+          ? "suggestion-card selected"
+          : "suggestion-card"
+      }
+    >
       <p>{suggestion}</p>
 
       <button
         type="button"
         onClick={onSelect}
       >
-        Select
+        {selected ? "Selected ✓" : "Select"}
       </button>
-
     </div>
   );
 }
