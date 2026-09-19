@@ -6,8 +6,9 @@ const generateReviewSuggestions = ({
 }) => {
   const business = businessType || "business";
   const serviceText = service || "service";
-  const contextText = context || "";
+  const contextText = context?.trim() || "";
 
+  // Positive ratings: 4 and 5 stars
   if (rating >= 4) {
     const suggestions = [
       `Great experience at the ${business}. The ${serviceText} was excellent and I was very happy with the service.`,
@@ -19,16 +20,29 @@ const generateReviewSuggestions = ({
 
     if (contextText) {
       return suggestions.map(
-        (suggestion) => `${suggestion} ${contextText}.`
+        (suggestion) => `${suggestion} ${contextText}`
       );
     }
 
     return suggestions;
   }
 
-  const feedback = `My experience with the ${business} was not as expected. The ${serviceText} could be improved. ${contextText}`.trim();
+  // Low ratings: 1, 2 and 3 stars
+  const suggestions = [
+    `My experience with the ${business} was not as expected. The ${serviceText} could be improved.`,
 
-  return [feedback];
+    `I feel the ${serviceText} at the ${business} could have been better. There is room for improvement.`,
+
+    `My experience with the ${business} was okay, but I think the ${serviceText} could be improved.`
+  ];
+
+  if (contextText) {
+    return suggestions.map(
+      (suggestion) => `${suggestion} ${contextText}`
+    );
+  }
+
+  return suggestions;
 };
 
 export default generateReviewSuggestions;
